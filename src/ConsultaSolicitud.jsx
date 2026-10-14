@@ -1,101 +1,127 @@
 import { useState } from "react";
 
-function ConsultaSolicitud() {
+export default function ConsultaSolicitud() {
   const [folio, setFolio] = useState("");
-  const [resultado, setResultado] = useState(null);
+  const [solicitud, setSolicitud] = useState(null);
   const [mensaje, setMensaje] = useState("");
 
-  function buscarSolicitud(evento) {
+  function consultar(evento) {
     evento.preventDefault();
+    setSolicitud(null);
+    setMensaje("");
 
-    const solicitudes =
-      JSON.parse(localStorage.getItem("solicitudes")) || [];
+    const folioBuscado = folio.trim().toLowerCase();
 
-    const solicitudEncontrada = solicitudes.find(
-      (solicitud) =>
-        solicitud.folio.toLowerCase() === folio.trim().toLowerCase()
-    );
+    if (!folioBuscado) {
+      setMensaje("Escribe el folio que deseas consultar.");
+      return;
+    }
 
-    if (solicitudEncontrada) {
-      setResultado(solicitudEncontrada);
-      setMensaje("");
-    } else {
-      setResultado(null);
-      setMensaje("No se encontró una solicitud con ese folio.");
+    try {
+      const guardadas = JSON.parse(
+        localStorage.getItem("solicitudes") || "[]"
+      );
+
+      if (!Array.isArray(guardadas)) {
+        throw new Error("Formato de datos inválido.");
+      }
+
+      const encontrada = guardadas.find(
+        (item) => item.folio.toLowerCase() === folioBuscado
+      );
+
+      if (encontrada) {
+        setSolicitud(encontrada);
+      } else {
+        setMensaje("No se encontró una solicitud con ese folio.");
+      }
+    } catch {
+      setMensaje("No se pudieron leer las solicitudes guardadas.");
     }
   }
 
   return (
-    <section className="seccion-consulta">
+    <section className="seccion-formulario consulta-actualizada">
       <p className="etiqueta">CONSULTA DE SOLICITUD</p>
       <h2>Revisa el estado de tu solicitud</h2>
-      <p>Escribe el folio que recibiste al realizar el registro.</p>
+      <p>Escribe el folio que recibiste al registrar el artículo.</p>
 
-      <form className="formulario-consulta" onSubmit={buscarSolicitud}>
-        <label>
+      <form onSubmit={consultar}>
+        <label className="campo-completo">
           Folio de la solicitud
           <input
             type="text"
             value={folio}
-            onChange={(evento) => setFolio(evento.target.value)}
+            onChange={(evento) => {
+              setFolio(evento.target.value);
+              setSolicitud(null);
+              setMensaje("");
+            }}
             placeholder="Ejemplo: COD-2026-0001"
             required
           />
         </label>
 
-        <button type="submit" className="principal">
-          Buscar solicitud
-        </button>
+        <div className="campo-completo">
+          <button type="submit" className="principal">
+            Buscar solicitud
+          </button>
+        </div>
       </form>
 
-      {mensaje && <div className="mensaje-error">{mensaje}</div>}
+      {mensaje && (
+        <p className="aviso-error" role="alert">
+          {mensaje}
+        </p>
+      )}
 
-      {resultado && (
-        <article className="resultado-consulta">
-          <div className="resultado-encabezado">
+      {solicitud && (
+        <article className="consulta-resultado" aria-live="polite">
+          <div className="consulta-cabecera">
+            <h3>{solicitud.folio}</h3>
+            <span className="estado-solicitud">
+              {solicitud.estado}
+            </span>
+          </div>
+
+          <dl className="consulta-datos">
             <div>
-              <small>Folio</small>
-              <h3>{resultado.folio}</h3>
+              <dt>Solicitante</dt>
+              <dd>{solicitud.solicitante}</dd>
             </div>
 
-            <span className="estado">{resultado.estado}</span>
-          </div>
+            <div>
+              <dt>Fecha de registro</dt>
+              <dd>{solicitud.fecha}</dd>
+            </div>
 
-          <div className="datos-solicitud">
-            <p>
-              <strong>Solicitante:</strong> {resultado.solicitante}
-            </p>
+            <div>
+              <dt>Artículo</dt>
+              <dd>{solicitud.articulo}</dd>
+            </div>
 
-            <p>
-              <strong>Fecha de registro:</strong> {resultado.fecha}
-            </p>
+            <div>
+              <dt>Categoría</dt>
+              <dd>{solicitud.categoria}</dd>
+            </div>
 
-            <p>
-              <strong>Artículo:</strong> {resultado.articulo}
-            </p>
+            <div>
+              <dt>Unidad de medida</dt>
+              <dd>{solicitud.unidad}</dd>
+            </div>
 
-            <p>
-              <strong>Categoría:</strong> {resultado.categoria}
-            </p>
+            <div>
+              <dt>Justificación</dt>
+              <dd>{solicitud.justificacion}</dd>
+            </div>
 
-            <p>
-              <strong>Unidad:</strong> {resultado.unidad}
-            </p>
-
-            <p>
-              <strong>Justificación:</strong> {resultado.justificacion}
-            </p>
-
-            {resultado.observaciones && (
-              <p>
-                <strong>Observaciones:</strong> {resultado.observaciones}
-              </p>
-            )}
-          </div>
+            <div>
+              <dt>Observaciones</dt>
+              <dd>{solicitud.observaciones || "Sin observaciones"}</dd>
+            </div>
+          </dl>
         </article>
       )}
     </section>
   );
 }
-
-export default ConsultaSolicitud;

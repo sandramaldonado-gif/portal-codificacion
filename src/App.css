@@ -343,3 +343,163 @@ form button {
     grid-template-columns: 1fr;
   }
 }
+.panel-analista {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 18px;
+  min-width: 0;
+}
+
+.panel-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.panel-filtros label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 220px;
+  font-weight: 600;
+}
+
+.panel-filtros input,
+.panel-filtros select,
+.panel-cambio select {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #bdcbdc;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #243449;
+  font: inherit;
+}
+
+.panel-tabla-contenedor {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.panel-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.panel-tabla caption {
+  text-align: left;
+  padding: 8px 0 14px;
+  color: #526176;
+}
+
+.panel-tabla th,
+.panel-tabla td {
+  padding: 14px 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #dce4ee;
+}
+
+.panel-tabla th {
+  background: #edf3fa;
+  color: #243449;
+}
+
+.panel-tabla tbody tr:hover {
+  background: #f8fafc;
+}
+
+.panel-cambio {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 155px;
+}
+
+.panel-cambio button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.estado-solicitud {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #e5efff;
+  color: #174b85;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.aviso-exito,
+.aviso-error {
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin: 18px 0;
+}
+
+.aviso-exito {
+  background: #eaf7ee;
+  color: #185c32;
+  border: 1px solid #a1d4b0;
+}
+
+.aviso-error {
+  background: #fff0f0;
+  color: #8a2020;
+  border: 1px solid #e7b1b1;
+}
+
+.consulta-resultado {
+  margin-top: 24px;
+  padding: 24px;
+  background: #f5f8fc;
+  border: 1px solid #dce4ee;
+  border-radius: 12px;
+}
+
+.consulta-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.consulta-cabecera h3 {
+  margin: 0;
+}
+
+.consulta-datos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.consulta-datos dt {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.consulta-datos dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .panel-analista {
+    padding: 16px;
+  }
+
+  .consulta-datos {
+    grid-template-columns: 1fr;
+  }
+
+  .consulta-resultado {
+    padding: 16px;
+  }
+}

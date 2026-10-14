@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import ConsultaSolicitud from "./ConsultaSolicitud";
+import PanelAnalista from "./PanelAnalista";
 
 function App() {
   const [pantalla, setPantalla] = useState("inicio");
@@ -88,6 +89,10 @@ function App() {
 
           <button onClick={() => setPantalla("consulta")}>
             Consultar solicitud
+          </button>
+
+          <button onClick={() => setPantalla("analista")}>
+            Panel del analista
           </button>
         </nav>
       </header>
@@ -278,6 +283,8 @@ function App() {
         )}
 
         {pantalla === "consulta" && <ConsultaSolicitud />}
+
+        {pantalla === "analista" && <PanelAnalista />}
       </main>
 
       <footer>
